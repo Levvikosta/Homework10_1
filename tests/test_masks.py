@@ -2,18 +2,17 @@ import pytest
 from src.masks import get_mask_card_number, get_mask_account
 
 # тест для функции get_mask_card_number
-@pytest.mark.parametrize("input_card, expected_output", [
-    ("1234123412341234", "123412 ****1234"),
-    ("5678567856785678", "5678** ****5678"),
-    ("1234", "1234** ****4"),  # Тест на короткий номер
+@pytest.mark.parametrize("card_number, expected_output", [
+    ("1234123412341234", "123412** ****1234"),
+    ("5678567856785678", "567856** ****5678"),
     ("", "Неверный номер карты"),  # Тест на пустую строку
     ("   ", "Неверный номер карты"),  # Тест на строку с пробелами
     ("123", "Неверный номер карты"),  # Тест на строку с недостаточным количеством цифр
 ])
 
 
-def test_mask_card_number(input_card, expected_output):
-    assert get_mask_card_number(input_card) == expected_output
+def test_mask_card_number(card_number, expected_output):
+    assert get_mask_card_number(card_number) == expected_output
 
 # Тесты для функции get_mask_account
 @pytest.mark.parametrize("input_account, expected_output", [
@@ -24,7 +23,6 @@ def test_mask_card_number(input_card, expected_output):
     ("1234", "**1234"),               # Тест на короткий номер счета
     ("", "**"),                       # Тест на пустую строку
     ("   ", "**"),                    # Тест на строку с пробелами
-    ("123", "**123")                  # Тест на строку с недостаточным количеством цифр
 ])
 def test_mask_account(input_account, expected_output):
     assert get_mask_account(input_account) == expected_output

@@ -1,37 +1,36 @@
 from datetime import datetime
+import pytest
 
+def mask_account_card(account_number: str) -> str:
+    account_number = ''.join(filter(str.isdigit, account_number))
 
-# функция для определения типа входных данных и применения соответствующей маскировки
-def mask_account_card(data: str, data_type: str) -> str:
-    if data_type == "card":
-        return get_mask_card_number(data)
-    elif data_type == "account":
-        return get_mask_account(data)
+    if len(account_number) == 16:  # если это номер карты
+        return f"**** **** **** {account_number[-4:]}"
+    elif len(account_number) >= 10:  # если это номер счета
+        return '*' * (len(account_number) - 4) + account_number[-4:]
+
     else:
-        return "Неверный тип данных"
+        raise ValueError("Неверный формат номера. Должен содержать как минимум 10 чисел.")
 
 
 def get_data(date_str: str) -> str:
-    """Преобразует строку с датой в формат 'YYYY-MM-DD'."""
-    if not date_str.strip():
-        return "Дата отсутствует"
+    """Функция преобразования даты из строки в формат 'YYYY-MM-DD'."""
+    if not date_str:
+        return "Нет даты"
 
-    # Попробуем распознать дату в нескольких форматах
     formats = [
-        "%Y-%m-%d",  # Часть форматов, которые мы ожидаем.
-        "%d/%m/%Y",
-        "%m-%d-%Y",
-        "%d-%m-%Y",
-        "%Y.%m.%d",
-        "%d %B %Y",  # Например: '5 January 2023'
-        "%B %d, %Y",  # Например: 'January 5, 2023'
+        "%Y-%m-%d",  # формат: 2023-10-25
+        "%d-%m-%Y",  # формат: 25-10-2023
+        "%m/%d/%Y",  # формат: 10/25/2023
+        "%Y.%m.%d",  # формат: 2023.10.25
+        "%B %d, %Y",  # формат: October 25, 2023
     ]
 
     for fmt in formats:
         try:
-            date_obj = datetime.strptime(date_str, fmt)
-            return date_obj.strftime("%Y-%m-%d")
+            date_object = datetime.strptime(date_str, fmt)
+            return date_object.strftime('%Y-%m-%d')
         except ValueError:
             continue
 
-    return "Некорректный формат даты"
+    return "Неверный формат даты"
