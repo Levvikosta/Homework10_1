@@ -1,3 +1,7 @@
+import pytest
+from src.processing import filter_by_state, sort_by_date
+
+
 @pytest.mark.parametrize("input_data, state, expected_output", [
     ([{"name": "item1", "state": "active"},
       {"name": "item2", "state": "inactive"},

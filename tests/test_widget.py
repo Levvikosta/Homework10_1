@@ -1,5 +1,6 @@
 import pytest
-from src.widget import mask_data
+from src.widget import mask_account_card, get_data
+from src.masks import get_mask_card_number, get_mask_account
 
 
 # Параметризованные тесты для функции mask_account_card

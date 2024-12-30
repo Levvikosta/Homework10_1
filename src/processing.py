@@ -1,8 +1,9 @@
 from typing import Iterable, Any, List, Dict
+from datetime import datetime
 
 
 def filter_by_state(dict_list: Iterable[list[dict[Any, Any]]], state: Any='EXECUTED')-> list[list[dict[Any, Any]]]:
-    '''Функция для выведения данных по значению'''
+    """Функция для выведения данных по значению"""
     executed_list = []
     for i in dict_list:
         if i['state'] == state:
@@ -10,14 +11,8 @@ def filter_by_state(dict_list: Iterable[list[dict[Any, Any]]], state: Any='EXECU
     return executed_list
 
 
-# def sort_by_date(dictionaries: Iterable[list[dict[Any, Any]]], reverse: bool =True) -> list[list[dict[Any, Any]]]:
-#     '''Функция для сортировки по датам'''
-#     list_by_date = sorted(dictionaries, key = lambda x: x['date'], reverse=reverse)
-#     return list_by_date
-
-
 def sort_by_date(data: list, ascending: bool = True) -> list:
-    '''Функция для сортировки по датам'''
+    """Функция для сортировки по датам"""
     def parse_date(date_str):
         formats = ["%Y-%m-%d", "%d/%m/%Y", "%m-%d-%Y", "%Y.%m.%d", "%d %B %Y", "%B %d, %Y"]
         for fmt in formats:
