@@ -42,39 +42,39 @@ def test_filter_by_state(input_data, state, expected_output):
 
 @pytest.mark.parametrize("input_data, ascending, expected_output", [
     ([
-        {"name": "item1", "date": "2023-01-05"},
-        {"name": "item2", "date": "2021-12-15"},
-        {"name": "item3", "date": "2022-11-20"},
-    ], True, [
-        {"name": "item2", "date": "2021-12-15"},
-        {"name": "item3", "date": "2022-11-20"},
-        {"name": "item1", "date": "2023-01-05"},
-    ]),
+         {"name": "item1", "date": "2023-01-05"},
+         {"name": "item2", "date": "2021-12-15"},
+         {"name": "item3", "date": "2022-11-20"},
+     ], True, [
+         {"name": "item2", "date": "2021-12-15"},
+         {"name": "item3", "date": "2022-11-20"},
+         {"name": "item1", "date": "2023-01-05"},
+     ]),
     ([
-        {"name": "item1", "date": "2023-01-05"},
-        {"name": "item2", "date": "2021-12-15"},
-        {"name": "item3", "date": "2022-11-20"},
-    ], False, [
-        {"name": "item1", "date": "2023-01-05"},
-        {"name": "item3", "date": "2022-11-20"},
-        {"name": "item2", "date": "2021-12-15"},
-    ]),
+         {"name": "item1", "date": "2023-01-05"},
+         {"name": "item2", "date": "2021-12-15"},
+         {"name": "item3", "date": "2022-11-20"},
+     ], False, [
+         {"name": "item1", "date": "2023-01-05"},
+         {"name": "item3", "date": "2022-11-20"},
+         {"name": "item2", "date": "2021-12-15"},
+     ]),
     ([
-        {"name": "item1", "date": "2023-01-05"},
-        {"name": "item2", "date": "2023-01-05"},
-        {"name": "item3", "date": "2022-11-20"},
-    ], True, [
-        {"name": "item3", "date": "2022-11-20"},
-        {"name": "item1", "date": "2023-01-05"},
-        {"name": "item2", "date": "2023-01-05"},
-    ]),
+         {"name": "item1", "date": "2023-01-05"},
+         {"name": "item2", "date": "2023-01-05"},
+         {"name": "item3", "date": "2022-11-20"},
+     ], True, [
+         {"name": "item3", "date": "2022-11-20"},
+         {"name": "item1", "date": "2023-01-05"},
+         {"name": "item2", "date": "2023-01-05"},
+     ]),
     ([
-        {"name": "item1", "date": "Not a date"},
-        {"name": "item2", "date": "2020-12-25"},
-        {"name": "item3", "date": "Invalid"},
-    ], True, [
-        {"name": "item2", "date": "2020-12-25"},
-    ]),
+         {"name": "item1", "date": "Not a date"},
+         {"name": "item2", "date": "2020-12-25"},
+         {"name": "item3", "date": "Invalid"},
+     ], True, [
+         {"name": "item2", "date": "2020-12-25"},
+     ]),
     ([], True, []),  # Пустой список
 ])
 def test_sort_by_date(input_data, ascending, expected_output):

@@ -8,4 +8,3 @@ def divide(a, b):
 def reverse_string(my_string):
     """"разворачивает строку"""
     return my_string[::-1]
-

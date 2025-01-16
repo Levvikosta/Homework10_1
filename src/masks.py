@@ -12,4 +12,3 @@ def get_mask_account(account: str) -> str:
     if not account or len(account) < 4:
         return "**"
     return "**" + str(account[-4:])
-

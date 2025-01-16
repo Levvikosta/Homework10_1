@@ -1,5 +1,5 @@
 from datetime import datetime
-import pytest
+
 
 def mask_account_card(account_number: str) -> str:
     account_number = ''.join(filter(str.isdigit, account_number))
