@@ -6,7 +6,7 @@ def filter_by_state(dict_list: Iterable[list[dict[Any, Any]]], state: Any = 'EXE
     """Функция для выведения данных по значению"""
     executed_list = []
     for i in dict_list:
-        if i['state'] == state:
+        if i["state"] == state:
             executed_list.append(i)
     return executed_list
 
