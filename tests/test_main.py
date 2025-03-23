@@ -12,6 +12,7 @@ def test_divide():
 # def test_reverse_string_letters(letters):
 #     assert reverse_string('hello') == letters
 
+
 @pytest.mark.parametrize('value, expected', [
     ('123', '321'),
     ('hello', 'olleh'),
