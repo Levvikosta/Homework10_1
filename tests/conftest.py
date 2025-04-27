@@ -1,9 +1,10 @@
 import pytest
 
 @pytest.fixture
-def numbers():
-    return "321"
+def func1():
+    return '123456 ** **** 0987'
+assert func1()
 
 @pytest.fixture
 def letters():
-    return "olleh"
+    return "olle
