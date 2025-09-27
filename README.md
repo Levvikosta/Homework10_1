@@ -21,6 +21,18 @@ filter_by_currency(transactions, currency) — фильтрация транза
 transaction_descriptions(transactions) — генерация описаний транзакций
 
 
+## Генераторы (модуль generators)
+
+### filter_by_currency(transactions, currency)
+Фильтрует транзакции по валюте.
+### transaction_descriptions(transactions)
+Возвращает описания транзакций.
+### card_number_generator(start, end)
+Генерирует номера карт в заданном диапазоне.
+
+
+
+
 
 
 

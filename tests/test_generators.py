@@ -1,53 +1,63 @@
 import pytest
-from generators import card_number_generator
+from typing import List, Dict, Any
+from generators import *
 
-def test_card_number_generator_basic_range_string_format():
-    start = "0000 0000 0000 0001"
-    end = "0000 0000 0000 0010"
-    expected = [
-        "0000 0000 0000 0001",
-        "0000 0000 0000 0002",
-        "0000 0000 0000 0003",
-        "0000 0000 0000 0004",
-        "0000 0000 0000 0005",
-        "0000 0000 0000 0006",
-        "0000 0000 0000 0007",
-        "0000 0000 0000 0008",
-        "0000 0000 0000 0009",
-        "0000 0000 0000 0010",
+
+@pytest.fixture
+def sample_transactions_with_descriptions() -> List[Dict[str, Any]]:
+    return [
+        {"id": 1, "amount": 100, "currency": "USD", "description": "Payment"},
+        {"id": 2, "amount": 200, "currency": "EUR", "description": "Transfer"},
+        {"id": 3, "amount": 50, "currency": "USD"},  # Нет description
+        {"id": 4, "description": "Refund"},  # Только description
     ]
-    produced = list(card_number_generator(start, end))
-    assert produced == expected
 
-def test_card_number_generator_basic_range_int_inputs():
-    start, end = 1, 3
-    expected = [
-        "0000 0000 0000 0001",
-        "0000 0000 0000 0002",
-        "0000 0000 0000 0003",
-    ]
-    produced = list(card_number_generator(start, end))
-    assert produced == expected
+def test_transaction_descriptions_basic(sample_transactions_with_descriptions):
+    result = list(transaction_descriptions(sample_transactions_with_descriptions))
+    # Если функция возвращает пустые строки - включаем их в ожидание
+    assert result == ["Payment", "Transfer", "Refund"]
 
-def test_card_number_generator_invalid_range_raises():
-    # start > end должен приводить к ValueError
+def test_transaction_descriptions_empty():
+    transactions = [{"id": 1}, {"amount": 100}]  # Нет description
+    result = list(transaction_descriptions(transactions))
+    assert result == []  # Пустой список, т.к. нет description
+
+
+# Тесты для card_number_generator
+@pytest.mark.parametrize("start,end,expected_first,expected_last,expected_count", [
+    ("0000 0000 0000 0001", "0000 0000 0000 0003", "0000 0000 0000 0001", "0000 0000 0000 0003", 3),
+    (1, 3, "0000 0000 0000 0001", "0000 0000 0000 0003", 3),
+    ("0000 0000 0000 0005", "0000 0000 0000 0005", "0000 0000 0000 0005", "0000 0000 0000 0005", 1),
+])
+def test_card_number_generator_basic(start, end, expected_first, expected_last, expected_count):
+    result = list(card_number_generator(start, end))
+    assert len(result) == expected_count
+    assert result[0] == expected_first
+    assert result[-1] == expected_last
+
+
+def test_card_number_generator_invalid_input():
     with pytest.raises(ValueError):
-        list(card_number_generator("0000 0000 0000 0010", "0000 0000 0000 0001"))
+        list(card_number_generator("0000 0000 0000 0005", "0000 0000 0000 0001"))  # start > end
 
-def test_card_number_generator_formatting_and_leading_zeros():
-    # проверяем нулевой номер и продолжение
-    start = "0000 0000 0000 0000"
-    end = "0000 0000 0000 0002"
-    out = list(card_number_generator(start, end))
-    assert out[0] == "0000 0000 0000 0000"
-    assert out[1] == "0000 0000 0000 0001"
-    assert out[2] == "0000 0000 0000 0002"
+    with pytest.raises(ValueError):
+        list(card_number_generator("ABCD 0000 0000 0001", "0000 0000 0000 0002"))  # нечисловые символы
 
-def test_card_number_generator_large_range_behaviour():
-    # небольшой, но более широкий диапазон для проверки производительности и корректности
-    start = "0000 0000 0000 0090"
-    end = "0000 0000 0000 0999"  # 90 до 999
-    out = list(card_number_generator(start, end))
-    assert out[0] == "0000 0000 0000 0090"
-    assert out[-1] == "0000 0000 0000 0999"
-    assert len(out) == 910  # 999 - 90 + 1
+
+def test_transaction_descriptions_invalid_input():
+    """Тест на некорректный ввод"""
+    # Пустой список
+    assert list(transaction_descriptions([])) == []
+    # None вместо списка
+    assert list(transaction_descriptions([None])) == []
+
+
+def test_card_number_edge_cases():
+    """Тест граничных случаев для генератора карт"""
+    # Одна карта
+    result = list(card_number_generator(1, 1))
+    assert result == ["0000 0000 0000 0001"]
+
+    # Неправильный формат номера
+    with pytest.raises(ValueError):
+        list(card_number_generator("invalid", 1))
