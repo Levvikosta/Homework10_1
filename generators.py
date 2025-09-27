@@ -1,3 +1,5 @@
+"""Module for transaction data generators."""
+
 from typing import Iterator, Dict, Any, Union, Iterable
 
 
@@ -6,9 +8,20 @@ def filter_by_currency(
 ) -> Iterator[Dict[str, Any]]:
     """Filter transactions by currency."""
     for transaction in transactions:
-        if isinstance(transaction, dict):
-            if transaction.get("currency") == currency:
-                yield transaction
+        if not isinstance(transaction, dict):
+            continue
+
+        # Вариант 1: Простая структура {"currency": "USD"}
+        if transaction.get("currency") == currency:
+            yield transaction
+
+        # Вариант 2: Вложенная структура operationAmount.currency.code
+        elif (transaction.get("operationAmount") and
+                isinstance(transaction["operationAmount"], dict) and
+                transaction["operationAmount"].get("currency") and
+                isinstance(transaction["operationAmount"]["currency"], dict) and
+                transaction["operationAmount"]["currency"].get("code") == currency):
+            yield transaction
 
 
 def _parse_card_number(value: Union[int, str]) -> int:
